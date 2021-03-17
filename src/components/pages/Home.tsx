@@ -1,10 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import LinkItem from '../molecules/LinkItem';
 import { Link } from '../../types';
+import axios from '../../services/axios';
+import DispatchContext from '../../contexts/dispatchContext';
 
 const Row = styled.div`
   display: flex;
@@ -33,11 +35,8 @@ const StyledLinkItem = styled(LinkItem)`
 `;
 
 
-type Props = {
-  links: Link[];
-};
-
-const Home = ({ links }: Props) => {
+const Home = () => {
+  const [{ links: { items } }, dispatch] = useContext(DispatchContext);
   const onChange = useCallback((v) => {
     console.log(v);
   }, []);
@@ -50,41 +49,24 @@ const Home = ({ links }: Props) => {
   const onCreateURL = useCallback(() => {
     console.log();
   }, []);
-  const tmpLinks = [
-    {_id: '123', value: 'somevalue'},
-    {_id: '124', value: 'somevalue'},
-    {_id: '125', value: 'somevalue'},
-    {_id: '126', value: 'somevalue'},
-    {_id: '127', value: 'somevalue'},
-    {_id: '128', value: 'somevalue'},
-    {_id: '129', value: 'somevalue'},
-    {_id: '130', value: 'somevalue'},
-    {_id: '131', value: 'somevalue'},
-    {_id: '133', value: 'somevalue'},
-    {_id: '134', value: 'somevalue'},
-    {_id: '136', value: 'somevalue'},
-    {_id: '137', value: 'somevalue'},
-    {_id: '138', value: 'somevalue'},
-    {_id: '139', value: 'somevalue'},
-    {_id: '140', value: 'somevalue'},
-    {_id: '141', value: 'somevalue'},
-    {_id: '142', value: 'somevalue'},
-    {_id: '143', value: 'somevalue'},
-    {_id: '144', value: 'somevalue'},
-    {_id: '145', value: 'somevalue'},
-    {_id: '146', value: 'somevalue'},
-    {_id: '147', value: 'somevalue'},
-    {_id: '148', value: 'somevalue'},
-  ];
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const { data } = await axios.get('/links');
+        dispatch({ type: 'SET_LINKS', data });
+      } catch (e) {}
+    };
+    fetch();
+  }, []);
   return (
     <>
     <Row>
       <StyledInput onChange={onChange} onEnterPress={onEnterPress} />
       <StyledButton onClick={onCreateURL} value="Generate URL" />
     </Row>
-    <h3>My Links({tmpLinks.length}):</h3>
+    <h3>My Links({items.length}):</h3>
     <LinksContainer>
-      {tmpLinks.map((link) => (
+      {items.map((link) => (
         <StyledLinkItem key={link._id} link={link} onDelete={onLinkDelete} />
       ))}
     </LinksContainer>

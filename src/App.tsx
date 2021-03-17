@@ -10,9 +10,9 @@ import theme from './theme';
 import './App.css';
 import Home from './components/pages/Home';
 import useCombinedReducer from './hooks/useCombinedReducer';
-import linksReducer, { State as LinksState } from './reducers/linksReducer';
+import linksReducer from './reducers/linksReducer';
 import DispatchContext from './contexts/dispatchContext';
-import { Action } from './types';
+import { Action, State } from './reducers';
 import Header from './components/organisms/Header';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
@@ -23,23 +23,19 @@ const Container = styled.div`
   width: 600px;
 `;
 
-type State = {
-  links: LinksState;
-};
-
 function App() {
   const [state, dispatch] = useCombinedReducer<State, Action>({
     links: useReducer(linksReducer, {items: []}),
   });
   return (
     <ThemeProvider theme={theme}>
-      <DispatchContext.Provider value={dispatch}>
+      <DispatchContext.Provider value={[state, dispatch]}>
         <Router>
           <Header />
           <Container>
             <Switch>
               <Route exact path="/">
-                <Home links={state.links.items} />
+                <Home />
               </Route>
               <Route path="/login">
                 <Login />

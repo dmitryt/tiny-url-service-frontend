@@ -1,6 +1,6 @@
 import {Link} from '../../types';
 
-type LinksAction = {
+export type LinksAction = {
   type: 'SET_LINKS',
   data: Link[],
 };

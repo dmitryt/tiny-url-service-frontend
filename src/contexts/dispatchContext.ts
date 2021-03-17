@@ -1,3 +1,5 @@
-import { createContext } from 'react';
+import { createContext, Dispatch } from 'react';
 
-export default createContext(null);
+import { State, InitialState, Action } from '../reducers';
+
+export default createContext<[State, Dispatch<Action>]>([InitialState, () => {}]);
