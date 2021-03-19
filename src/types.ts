@@ -1,4 +1,5 @@
 export type Link = {
   _id: string;
-  value: string;
+  alias: string;
+  url: string;
 };

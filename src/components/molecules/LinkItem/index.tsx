@@ -40,7 +40,7 @@ const LinkItem = ({ link, onDelete, ...rest }: Props) => {
   }, [onDelete, closeModal]);
   return (
     <Row {...rest}>
-      <Value>{link.value}</Value>
+      <Value title={link.alias}>{link.url}</Value>
       <Panel>
         <Icon className="fa-times" onClick={onDeleteCb} />
       </Panel>

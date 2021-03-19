@@ -20,24 +20,16 @@ const StyledSubmitButton = styled(Button)`
   margin-top: 20px;
 `;
 
-const Register = () => {
-  const validate = useCallback(({ data }) => {
-    const requiredFields = ['email', 'password'];
-    let errors = requiredFields.reduce((acc, key) => ({
-      ...acc,
-      ...(!data[key] ? {[key]: 'Required field'} : {}),
-    }), {});
-    return errors;
-  }, []);
-  const onSubmit = useCallback(({ passwordConfirmation, ...data}) => {
+const Login = () => {
+  const onSubmit = useCallback((data) => {
     console.log(data);
   }, []);
   return (
     <>
       <Centered>
-        <h2>Registration Form</h2>
+        <h2>Login Form</h2>
       </Centered>
-      <Form validate={validate} onSubmit={onSubmit}>
+      <Form requiredFields={['email', 'password']} onSubmit={onSubmit}>
         {(props) => (
           <>
             <StyledFormField label="Email" name="email" required Component={Input} {...props} />
@@ -53,4 +45,4 @@ const Register = () => {
   );
 };
 
-export default React.memo(Register);
+export default React.memo(Login);

@@ -61,8 +61,8 @@ const Header = ({ ...rest }: Props) => {
       </Logo>
       {user && (
         <>
-          <UserInfo>{username}</UserInfo>
-          <a href="/">Logout</a>
+          {/* <UserInfo>{username}</UserInfo> */}
+          <a href="/login">Sign In</a>
         </>
       )}
     </Container>

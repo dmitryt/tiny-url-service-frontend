@@ -5,6 +5,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 
 import theme from './theme';
 import './App.css';
@@ -50,6 +51,7 @@ function App() {
           </Container>
         </Router>
       </DispatchContext.Provider>
+      <ToastContainer />
     </ThemeProvider>
   );
 }

@@ -1,6 +1,6 @@
-import { State as LinksState, LinksAction } from './linksReducer';
+import { State as LinksState, LinkAction } from './linksReducer';
 
-export type Action = LinksAction;
+export type Action = LinkAction;
 
 export type Link = {
   _id: string;

@@ -31,11 +31,7 @@ const Row = styled.div`
 const Register = () => {
   const validate = useCallback(({ data }) => {
     const emailRegexp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    const requiredFields = ['email', 'password'];
-    let errors = requiredFields.reduce((acc, key) => ({
-      ...acc,
-      ...(!data[key] ? {[key]: 'Required field'} : {}),
-    }), {});
+    let errors = {};
     if (data.email && !emailRegexp.test(data.email)) {
       errors = {...errors, email: 'Email is invalid'};
     }
@@ -52,7 +48,7 @@ const Register = () => {
       <Centered>
         <h2>Registration Form</h2>
       </Centered>
-      <Form validate={validate} onSubmit={onSubmit}>
+      <Form validate={validate} requiredFields={['email', 'password']} onSubmit={onSubmit}>
         {(props) => (
           <>
             <StyledFormField label="Email" name="email" required Component={Input} {...props} />

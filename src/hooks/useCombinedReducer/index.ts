@@ -12,7 +12,7 @@ const useCombinedReducer = <S, A>(combinedReducers: {[k: string]: [ReducerStateW
   );
 
   // Global Dispatch Function
-  const dispatch = (action: A) =>
+  const dispatch = (action: A) => 
     Object.keys(combinedReducers)
       .map(key => combinedReducers[key][1])
       .forEach(fn => fn(action));
