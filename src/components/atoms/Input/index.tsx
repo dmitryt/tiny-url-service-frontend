@@ -15,6 +15,7 @@ const StyledInput = styled.input`
 export type Props = {
   onChange: (value: string) => void;
   onBlur?: () => void;
+  onFocus?: () => void;
   type?: string;
   value?: string;
   className?: string;

@@ -31,8 +31,8 @@ const Form = ({ validate, children, onSubmit, initialValues, requiredFields, isS
     setTouchedHandler({ ...touched, [name]: true });
   }, [touched, setTouchedHandler]);
   const onChange = useCallback((name: string, value: string) => {
-    setData({...data, [name]: value });
-  }, [data, setData]);
+    setData((d) => ({...d, [name]: value }));
+  }, [setData]);
   const onSubmitCb: FormEventHandler<HTMLFormElement> = useCallback((e) => {
     e.preventDefault();
     if (Object.keys(errors).length === 0 && !isSubmitting) {
