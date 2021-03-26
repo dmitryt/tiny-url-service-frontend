@@ -1,11 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import FormField from '../molecules/FormField';
 import Form from '../molecules/Form';
-import { Link } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
+
+import axios from '../../services/axios';
+import { errorToast, successToast } from '../../services/toast';
 
 const Centered = styled.div`
   text-align: center;
@@ -29,29 +32,37 @@ const Row = styled.div`
 `;
 
 const Register = () => {
+  const [isRegistered, setRegistered] = useState(false);
   const validate = useCallback(({ data }) => {
-    const emailRegexp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     let errors = {};
-    if (data.email && !emailRegexp.test(data.email)) {
-      errors = {...errors, email: 'Email is invalid'};
-    }
     if (data.password && data.password !== data.passwordConfirmation) {
       errors = {...errors, passwordConfirmation: 'Password should be equal with confirmation'};
     }
     return errors;
   }, []);
-  const onSubmit = useCallback(({ passwordConfirmation, ...data}) => {
-    console.log(data);
-  }, []);
+  const onSubmit = useCallback(async ({ passwordConfirmation, ...data}) => {
+    try {
+      await axios.post('/auth/register', data);
+      successToast('User was registered successfully. Please sign in');
+      setRegistered(true);
+    } catch (e) {
+      errorToast('Authorization failed');
+    }
+  }, [setRegistered]);
+  if (isRegistered) {
+    return (
+      <Redirect to="/login" />
+    );
+  }
   return (
     <>
       <Centered>
         <h2>Registration Form</h2>
       </Centered>
-      <Form validate={validate} requiredFields={['email', 'password']} onSubmit={onSubmit}>
+      <Form validate={validate} requiredFields={['username', 'password']} onSubmit={onSubmit}>
         {(props) => (
           <>
-            <StyledFormField label="Email" name="email" required Component={Input} {...props} />
+            <StyledFormField label="Username" name="username" required Component={Input} {...props} />
             <StyledFormField label="Password" name="password" type="password" required Component={Input} {...props} />
             <StyledFormField label="Password Confirmation" name="passwordConfirmation" type="password" required Component={Input} {...props} />
             <Row>

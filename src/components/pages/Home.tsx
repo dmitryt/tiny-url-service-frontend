@@ -2,11 +2,12 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import LinkItem from '../molecules/LinkItem';
-import axios from '../../services/axios';
+import { securedInstance as axios } from '../../services/axios';
 import { errorToast, successToast } from '../../services/toast';
 import DispatchContext from '../../contexts/dispatchContext';
 import AddField from '../molecules/AddField';
 import { Data as FormData } from '../molecules/Form';
+import { Redirect } from 'react-router';
 
 const LinksContainer = styled.div`
   height: 500px;

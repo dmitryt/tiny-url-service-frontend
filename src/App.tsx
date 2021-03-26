@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useMemo, useReducer } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import {
   BrowserRouter as Router,
@@ -11,22 +11,38 @@ import theme from './theme';
 import './App.css';
 import Home from './components/pages/Home';
 import useCombinedReducer from './hooks/useCombinedReducer';
+import withProtect from './hocs/withProtect';
 import linksReducer from './reducers/linksReducer';
 import DispatchContext from './contexts/dispatchContext';
-import { Action, State } from './reducers';
+import { Action, State, InitialState } from './reducers';
 import Header from './components/organisms/Header';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
 import NotFound from './components/pages/NotFound';
+import userReducer from './reducers/userReducer';
+import config from './config';
 
 const Container = styled.div`
   margin: 2rem auto 0;
   width: 600px;
 `;
 
+const ProtectedHome = withProtect(Home);
+
 function App() {
-  const [state, dispatch] = useCombinedReducer<State, Action>({
-    links: useReducer(linksReducer, {items: []}),
+  const initialState = useMemo<State>(() => {
+    const result = sessionStorage.getItem(config.storageKey);
+    try {
+      if (result) {
+        return JSON.parse(result);
+      }
+    } catch (e) {
+    }
+    return InitialState;
+  }, [sessionStorage]);
+  const [state, dispatch] = useCombinedReducer<State, any>({
+    links: useReducer(linksReducer, initialState.links || {items: []}),
+    user: useReducer(userReducer, initialState.user),
   });
   return (
     <ThemeProvider theme={theme}>
@@ -36,12 +52,12 @@ function App() {
           <Container>
             <Switch>
               <Route exact path="/">
-                <Home />
+                <ProtectedHome />
               </Route>
-              <Route path="/login">
+              <Route exact path="/login">
                 <Login />
               </Route>
-              <Route path="/register">
+              <Route exact path="/register">
                 <Register />
               </Route>
               <Route path="*">

@@ -1,8 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import {
   Link
 } from "react-router-dom";
+
+import { securedInstance as axios } from '../../../services/axios';
+import { errorToast } from '../../../services/toast';
+import DispatchContext from '../../../contexts/dispatchContext';
 
 const Container = styled.div`
   display: flex;
@@ -45,6 +49,15 @@ const Header = ({ ...rest }: Props) => {
     lastName: 'Smith',
     email: 'will.smith@gmail.com',
   };
+  const [, dispatch] = useContext(DispatchContext);
+  const onLogout = useCallback(async () => {
+    try {
+      await axios.post('/auth/logout');
+      dispatch({ type: 'SET_USER', data: null });
+    } catch (e) {
+      errorToast('Logout failed');
+    }
+  }, []);
   const username = useMemo(() => {
     if (!user) {
       return null;
@@ -62,7 +75,7 @@ const Header = ({ ...rest }: Props) => {
       {user && (
         <>
           {/* <UserInfo>{username}</UserInfo> */}
-          <a href="/login">Sign In</a>
+          <a href="javascript:void(0)" onClick={onLogout}>Logout</a>
         </>
       )}
     </Container>
