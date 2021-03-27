@@ -44,12 +44,7 @@ type Props = {
 };
 
 const Header = ({ ...rest }: Props) => {
-  const user: User = {
-    firstName: 'Will',
-    lastName: 'Smith',
-    email: 'will.smith@gmail.com',
-  };
-  const [, dispatch] = useContext(DispatchContext);
+  const [{ user: { isAuthorized, data: user }}, dispatch] = useContext(DispatchContext);
   const onLogout = useCallback(async () => {
     try {
       await axios.post('/auth/logout');
@@ -63,7 +58,7 @@ const Header = ({ ...rest }: Props) => {
       return null;
     }
     if (!user.firstName && !user.lastName) {
-      return user.email;
+      return user.username;
     }
     return [user.firstName, user.lastName].filter(Boolean).join(' ');
   }, [user]);
@@ -74,8 +69,12 @@ const Header = ({ ...rest }: Props) => {
       </Logo>
       {user && (
         <>
-          {/* <UserInfo>{username}</UserInfo> */}
-          <a href="javascript:void(0)" onClick={onLogout}>Logout</a>
+          {isAuthorized && (
+            <>
+              <UserInfo>Hello, {username}.</UserInfo>
+              <a href="#" onClick={onLogout}>Logout</a>
+            </>
+          )}
         </>
       )}
     </Container>

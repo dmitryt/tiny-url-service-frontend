@@ -18,6 +18,7 @@ export type Props = {
   onFocus?: () => void;
   type?: string;
   value?: string;
+  name?: string;
   className?: string;
   invalid?: boolean;
 }

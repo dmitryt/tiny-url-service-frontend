@@ -41,6 +41,7 @@ type Props = {
   name: string;
   label?: string;
   required?: boolean;
+  placeholder?: string;
   className?: string;
   errors: {[key: string]: boolean};
 };
@@ -67,7 +68,7 @@ const FormField = ({ Component, required, className, label, errors, onChange, na
           <StyledLabel className={labelClasses}>{label}</StyledLabel>:
         </>
       )}
-      <Component {...rest} onChange={onChangeCb} onBlur={onBlur} invalid={invalid} value={value} />
+      <Component {...rest} onChange={onChangeCb} onBlur={onBlur} invalid={invalid} value={value} name={name} />
       <ErrorMessage>{invalid ? errors[name] : ' '}</ErrorMessage>
     </Container>
   );

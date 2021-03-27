@@ -29,7 +29,7 @@ const Login = () => {
   const onSubmit = useCallback(async (payload) => {
     try {
       const { data } = await axios.post('/auth/login', payload);
-      dispatch({ type: 'SET_USER', data: data.uid });
+      dispatch({ type: 'SET_USER', data });
       setAuthorized(true);
     } catch (e) {
       errorToast('Username or password is invalid');
@@ -43,13 +43,13 @@ const Login = () => {
   return (
     <>
       <Centered>
-        <h2>Login Form</h2>
+        <h2>Login Page</h2>
       </Centered>
       <Form requiredFields={['username', 'password']} onSubmit={onSubmit}>
         {(props) => (
           <>
-            <StyledFormField label="Username" name="username" required Component={Input} {...props} />
-            <StyledFormField label="Password" name="password" type="password" required Component={Input} {...props} />
+            <StyledFormField label="Username" name="username" placeholder="Enter username" required Component={Input} {...props} />
+            <StyledFormField label="Password" name="password" placeholder="Enter password" type="password" required Component={Input} {...props} />
             <StyledSubmitButton type="submit" value="Login" disabled={Object.keys(props.errors).length !== 0} />
             <p>
               Don't have an account? Please, <Link to="/register">sign up</Link>

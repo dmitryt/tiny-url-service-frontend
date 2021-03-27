@@ -7,7 +7,6 @@ import { errorToast, successToast } from '../../services/toast';
 import DispatchContext from '../../contexts/dispatchContext';
 import AddField from '../molecules/AddField';
 import { Data as FormData } from '../molecules/Form';
-import { Redirect } from 'react-router';
 
 const LinksContainer = styled.div`
   height: 500px;
@@ -59,6 +58,7 @@ const Home = () => {
   }, []);
   return (
     <>
+    <span>Create new URL page.</span>
     <AddField onSubmit={onLinkAdd} disabled={isAddingLink} />
     <h3>My Links({items.length}):</h3>
     <LinksContainer>

@@ -30,11 +30,11 @@ type Props = {
 
 const AddField = ({ onSubmit, disabled, ...rest }: Props) => {
   return (
-    <Form requiredFields={['value']} onSubmit={onSubmit} isSubmitting={disabled} resetOnSubmit>
+    <Form onSubmit={onSubmit} isSubmitting={disabled} resetOnSubmit>
       {({ isSubmitting, ...props }) => (
         <Row {...rest}>
-          <StyledFormField name="value" required Component={StyledInput} {...props} />
-          <StyledButton type="submit" value="Generate URL" disabled={Object.keys(props.errors).length !== 0 || isSubmitting} />
+          <StyledFormField name="full_url" Component={StyledInput} {...props} />
+          <StyledButton type="submit" value="Generate URL" disabled={!props.data.full_url || isSubmitting} />
         </Row>
       )}
     </Form>

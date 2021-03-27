@@ -19,6 +19,6 @@ export const InitialState: State = {
   },
   user: {
     isAuthorized: false,
-    uid: null,
+    data: null,
   },
 };
